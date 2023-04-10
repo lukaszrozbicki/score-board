@@ -61,13 +61,11 @@ describe("Scoreboard library", () => {
     })
 
     describe("Updating score", () => {
-        it.todo("Updates the score of the game currently in progress")
         it.todo("Disallows to update a score for non-existing game")
         it.todo("Disallows to set a lower score for existing game")
     })
 
     describe("Finishing game", () => {
-        it.todo("Finishes the specified game in progress")
         it.todo("Disallows to finish the non-existing game")
     })
 
