@@ -4,10 +4,10 @@ import {
     NegativeScoreValueException,
     NewGameScoreIsLowerThanCurrentException
 } from "./exceptions"
-import { Game, ScoreBoard, Team } from "./score-board"
+import { Game, GameWithOrder, ScoreBoard, Team } from "./score-board"
 
 export class ScoreBoardInMemory implements ScoreBoard {
-    private games: Game[] = []
+    private games: GameWithOrder[] = []
 
     private findGameIndex(homeTeam: Team, awayTeam: Team): number {
         return this.games.findIndex((game) => {
@@ -15,7 +15,7 @@ export class ScoreBoardInMemory implements ScoreBoard {
         })
     }
 
-    private updateGameOnIndex(gameIndex: number, game?: Game): void {
+    private updateGameOnIndex(gameIndex: number, game?: GameWithOrder): void {
         const newGames = [...this.games]
 
         if (game) {
@@ -40,11 +40,8 @@ export class ScoreBoardInMemory implements ScoreBoard {
             awayTeamScore: 0,
             homeTeam,
             homeTeamScore: 0,
+            order: this.games.length,
         })
-    }
-
-    getGameSummary(): Game[] {
-        return this.games
     }
 
     updateGame(
@@ -76,6 +73,7 @@ export class ScoreBoardInMemory implements ScoreBoard {
             awayTeamScore,
             homeTeam,
             homeTeamScore,
+            order: this.games[gameToUpdateIndex].order,
         })
     }
 
@@ -87,5 +85,34 @@ export class ScoreBoardInMemory implements ScoreBoard {
         }
 
         this.updateGameOnIndex(gameToUpdateIndex)
+    }
+
+    getGameSummary(): Game[] {
+        return this.games
+            .sort((gameA, gameB) => {
+                const gameATotalScore = gameA.homeTeamScore + gameA.awayTeamScore
+                const gameBTotalScore = gameB.homeTeamScore + gameB.awayTeamScore
+
+                if (gameATotalScore < gameBTotalScore) {
+                    return 1
+                }
+
+                if (gameATotalScore > gameBTotalScore) {
+                    return -1
+                }
+
+                if (gameA.order < gameB.order) {
+                    return 1
+                }
+
+                if (gameA.order > gameB.order) {
+                    return -1
+                }
+
+                return 0
+            })
+            .map<Game>(({ order: _, ...game }) => {
+                return game
+            })
     }
 }

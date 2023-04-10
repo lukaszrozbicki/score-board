@@ -7,6 +7,8 @@ export interface Game {
     homeTeamScore: number
 }
 
+export type GameWithOrder = Game & { order: number }
+
 export interface ScoreBoard {
     addGame(homeTeam: Team, awayTeam: Team): void
     updateGame(homeTeam: Team, awayTeam: Team, homeTeamScore: number, awayTeamScore: number, force?: boolean): void

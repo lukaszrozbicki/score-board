@@ -117,7 +117,33 @@ describe("Scoreboard library", () => {
     })
 
     describe("Game summary", () => {
-        it.todo("Returns an empty array if no games are in progress")
-        it.todo("Returns games in progress ordered by the total score and add time")
+        const scoreBoard: ScoreBoard = new ScoreBoardInMemory()
+
+        it("Returns an empty array if no games are in progress", () => {
+            expect(scoreBoard.getGameSummary()).toEqual([])
+        })
+
+        it("Returns games in progress ordered by the total score and add time", () => {
+            scoreBoard.addGame("Mexico", "Canada")
+            scoreBoard.addGame("Spain", "Brazil")
+            scoreBoard.addGame("Germany", "France")
+            scoreBoard.addGame("Uruguay", "Italy")
+            scoreBoard.addGame("Argentina", "Australia")
+            scoreBoard.updateGame("Mexico", "Canada", 0, 5)
+            scoreBoard.updateGame("Spain", "Brazil", 10, 2)
+            scoreBoard.updateGame("Germany", "France", 2, 2)
+            scoreBoard.updateGame("Uruguay", "Italy", 6, 6)
+            scoreBoard.updateGame("Argentina", "Australia", 3, 1)
+
+            const expectedGameSummary: Game[] = [
+                { awayTeam: "Italy", awayTeamScore: 6, homeTeam: "Uruguay", homeTeamScore: 6 },
+                { awayTeam: "Brazil", awayTeamScore: 2, homeTeam: "Spain", homeTeamScore: 10 },
+                { awayTeam: "Canada", awayTeamScore: 5, homeTeam: "Mexico", homeTeamScore: 0 },
+                { awayTeam: "Australia", awayTeamScore: 1, homeTeam: "Argentina", homeTeamScore: 3 },
+                { awayTeam: "France", awayTeamScore: 2, homeTeam: "Germany", homeTeamScore: 2 },
+            ]
+
+            expect(scoreBoard.getGameSummary()).toEqual(expectedGameSummary)
+        })
     })
 })
