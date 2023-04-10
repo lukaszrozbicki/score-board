@@ -1,8 +1,45 @@
-import { describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
+import { Game, ScoreBoard, Team } from "./score-board"
+import { ScoreBoardInMemory } from "./score-board-in-memory"
 
 describe("Scoreboard library", () => {
     describe("Happy path", () => {
-        it.todo("allows to add new game, update its score, check it on the scoreboard and eventually finish it")
+        const scoreBoard: ScoreBoard = new ScoreBoardInMemory()
+
+        it("allows to add new game, update its score, check it on the scoreboard and eventually finish it", () => {
+            const homeTeam: Team = "TeamA"
+            const awayTeam: Team = "TeamB"
+
+            scoreBoard.addGame(homeTeam, awayTeam)
+
+            const expectedScoreboard: Game[] = [
+                {
+                    awayTeam,
+                    awayTeamScore: 0,
+                    homeTeam,
+                    homeTeamScore: 0,
+                }
+            ]
+
+            expect(scoreBoard.getGameSummary()).to.equal(expectedScoreboard)
+
+            scoreBoard.updateGame(homeTeam, awayTeam, 1, 0)
+
+            const expectedUpdatedScoreboard: Game[] = [
+                {
+                    awayTeam,
+                    awayTeamScore: 0,
+                    homeTeam,
+                    homeTeamScore: 1,
+                }
+            ]
+
+            expect(scoreBoard.getGameSummary()).to.equal(expectedUpdatedScoreboard)
+
+            scoreBoard.finishGame(homeTeam, awayTeam)
+
+            expect(scoreBoard.getGameSummary()).to.equal([])
+        })
     })
 
     describe("Adding new game", () => {
