@@ -1,3 +1,4 @@
+import { GameAlreadyInScoreboardException } from "./exceptions"
 import { Game, ScoreBoard, Team } from "./score-board"
 
 export class ScoreBoardInMemory implements ScoreBoard {
@@ -22,6 +23,13 @@ export class ScoreBoardInMemory implements ScoreBoard {
     }
 
     addGame(homeTeam: Team, awayTeam: Team): void {
+        const gameIndex = this.findGameIndex(homeTeam, awayTeam)
+        const mismatchedGameIndex = this.findGameIndex(awayTeam, homeTeam)
+
+        if (gameIndex > -1 || mismatchedGameIndex > -1) {
+            throw new GameAlreadyInScoreboardException()
+        }
+
         this.games.push({
             awayTeam,
             awayTeamScore: 0,

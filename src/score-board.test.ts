@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { GameAlreadyInScoreboardException } from "./exceptions"
 import { Game, ScoreBoard, Team } from "./score-board"
 import { ScoreBoardInMemory } from "./score-board-in-memory"
 
@@ -42,7 +43,21 @@ describe("Scoreboard library", () => {
     })
 
     describe("Adding new game", () => {
-        it.todo("Disallows to add a new game with same teams as are already added")
+        const scoreBoard: ScoreBoard = new ScoreBoardInMemory()
+        const homeTeam: Team = "TeamA"
+        const awayTeam: Team = "TeamB"
+
+        it("Disallows to add a new game with same teams as are already added", () => {
+            scoreBoard.addGame(homeTeam, awayTeam)
+
+            expect(() => {
+                scoreBoard.addGame(homeTeam, awayTeam)
+            }).toThrow(new GameAlreadyInScoreboardException())
+
+            expect(() => {
+                scoreBoard.addGame(awayTeam, homeTeam)
+            }).toThrow(new GameAlreadyInScoreboardException())
+        })
     })
 
     describe("Updating score", () => {
