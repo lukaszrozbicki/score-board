@@ -8,11 +8,12 @@ import {
 import { Game, ScoreBoard, Team } from "./score-board"
 import { ScoreBoardInMemory } from "./score-board-in-memory"
 
+const homeTeam: Team = "TeamA"
+const awayTeam: Team = "TeamB"
+
 describe("Scoreboard library", () => {
     describe("Happy path", () => {
         const scoreBoard: ScoreBoard = new ScoreBoardInMemory()
-        const homeTeam: Team = "TeamA"
-        const awayTeam: Team = "TeamB"
 
         it("Allows to add new game, update its score, check it on the scoreboard and eventually finish it", () => {
             scoreBoard.addGame(homeTeam, awayTeam)
@@ -49,8 +50,6 @@ describe("Scoreboard library", () => {
 
     describe("Adding new game", () => {
         const scoreBoard: ScoreBoard = new ScoreBoardInMemory()
-        const homeTeam: Team = "TeamA"
-        const awayTeam: Team = "TeamB"
 
         it("Disallows to add a new game with same teams as are already added", () => {
             scoreBoard.addGame(homeTeam, awayTeam)
@@ -67,8 +66,6 @@ describe("Scoreboard library", () => {
 
     describe("Updating score", () => {
         const scoreBoard: ScoreBoard = new ScoreBoardInMemory()
-        const homeTeam: Team = "TeamA"
-        const awayTeam: Team = "TeamB"
 
         it("Disallows to update a score for non-existing game", () => {
             expect(() => {
@@ -110,7 +107,13 @@ describe("Scoreboard library", () => {
     })
 
     describe("Finishing game", () => {
-        it.todo("Disallows to finish the non-existing game")
+        const scoreBoard: ScoreBoard = new ScoreBoardInMemory()
+
+        it("Disallows to finish the non-existing game", () => {
+            expect(() => {
+                scoreBoard.finishGame(homeTeam, awayTeam)
+            }).toThrow(new GameDoesNotExistException())
+        })
     })
 
     describe("Game summary", () => {
