@@ -47,7 +47,13 @@ export class ScoreBoardInMemory implements ScoreBoard {
         return this.games
     }
 
-    updateGame(homeTeam: Team, awayTeam: Team, homeTeamScore: number, awayTeamScore: number): void {
+    updateGame(
+        homeTeam: Team,
+        awayTeam: Team,
+        homeTeamScore: number,
+        awayTeamScore: number,
+        force: boolean = false,
+    ): void {
         const gameToUpdateIndex = this.findGameIndex(homeTeam, awayTeam)
 
         if (gameToUpdateIndex === -1) {
@@ -58,10 +64,10 @@ export class ScoreBoardInMemory implements ScoreBoard {
             throw new NegativeScoreValueException()
         }
 
-        if (
+        if (!force && (
             this.games[gameToUpdateIndex].homeTeamScore > homeTeamScore
             || this.games[gameToUpdateIndex].awayTeamScore > awayTeamScore
-        ) {
+        )) {
             throw new NewGameScoreIsLowerThanCurrentException()
         }
 

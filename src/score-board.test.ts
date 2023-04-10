@@ -92,6 +92,21 @@ describe("Scoreboard library", () => {
                 scoreBoard.updateGame(homeTeam, awayTeam, 2, 0)
             }).toThrow(new NewGameScoreIsLowerThanCurrentException())
         })
+
+        it("Allows to set the lower score for existing game when forced", () => {
+            scoreBoard.updateGame(homeTeam, awayTeam, 0, 0, true)
+
+            const expectedUpdatedScoreboard: Game[] = [
+                {
+                    awayTeam,
+                    awayTeamScore: 0,
+                    homeTeam,
+                    homeTeamScore: 0,
+                }
+            ]
+
+            expect(scoreBoard.getGameSummary()).toEqual(expectedUpdatedScoreboard)
+        })
     })
 
     describe("Finishing game", () => {

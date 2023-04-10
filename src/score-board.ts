@@ -9,7 +9,7 @@ export interface Game {
 
 export interface ScoreBoard {
     addGame(homeTeam: Team, awayTeam: Team): void
-    updateGame(homeTeam: Team, awayTeam: Team, homeTeamScore: number, awayTeamScore: number): void
+    updateGame(homeTeam: Team, awayTeam: Team, homeTeamScore: number, awayTeamScore: number, force?: boolean): void
     finishGame(homeTeam: Team, awayTeam: Team)
     getGameSummary(): Game[]
 }
