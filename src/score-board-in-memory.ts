@@ -1,4 +1,4 @@
-import { GameAlreadyInScoreboardException } from "./exceptions"
+import { GameAlreadyInScoreboardException, GameDoesNotExist } from "./exceptions"
 import { Game, ScoreBoard, Team } from "./score-board"
 
 export class ScoreBoardInMemory implements ScoreBoard {
@@ -46,7 +46,7 @@ export class ScoreBoardInMemory implements ScoreBoard {
         const gameToUpdateIndex = this.findGameIndex(homeTeam, awayTeam)
 
         if (gameToUpdateIndex === -1) {
-            return
+            throw new GameDoesNotExist()
         }
 
         this.updateGameOnIndex(gameToUpdateIndex, {

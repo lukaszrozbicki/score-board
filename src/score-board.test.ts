@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { GameAlreadyInScoreboardException } from "./exceptions"
+import { GameAlreadyInScoreboardException, GameDoesNotExist } from "./exceptions"
 import { Game, ScoreBoard, Team } from "./score-board"
 import { ScoreBoardInMemory } from "./score-board-in-memory"
 
@@ -61,7 +61,17 @@ describe("Scoreboard library", () => {
     })
 
     describe("Updating score", () => {
-        it.todo("Disallows to update a score for non-existing game")
+        const scoreBoard: ScoreBoard = new ScoreBoardInMemory()
+        const homeTeam: Team = "TeamA"
+        const awayTeam: Team = "TeamB"
+
+        it("Disallows to update a score for non-existing game", () => {
+            expect(() => {
+                scoreBoard.updateGame(homeTeam, awayTeam, 1, 0)
+
+            }).toThrow(new GameDoesNotExist())
+        })
+
         it.todo("Disallows to set a lower score for existing game")
     })
 
