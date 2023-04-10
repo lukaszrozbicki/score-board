@@ -4,10 +4,14 @@ export class GameAlreadyInScoreboardException extends Error {
     message = messages.gameAlreadyInScoreboardMessage
 }
 
-export class GameDoesNotExist extends Error {
+export class GameDoesNotExistException extends Error {
     message = messages.gameDoesNotExist
 }
 
-export class NewGameScoreIsLowerThanCurrent extends Error {
+export class NewGameScoreIsLowerThanCurrentException extends Error {
     message = messages.newGameScoreIsLowerThanCurrent
+}
+
+export class NegativeScoreValueException extends Error {
+    message = messages.noNegativeScoreValue
 }

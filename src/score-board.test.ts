@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { GameAlreadyInScoreboardException, GameDoesNotExist, NewGameScoreIsLowerThanCurrent } from "./exceptions"
+import {
+    GameAlreadyInScoreboardException,
+    GameDoesNotExistException,
+    NegativeScoreValueException,
+    NewGameScoreIsLowerThanCurrentException
+} from "./exceptions"
 import { Game, ScoreBoard, Team } from "./score-board"
 import { ScoreBoardInMemory } from "./score-board-in-memory"
 
@@ -9,7 +14,7 @@ describe("Scoreboard library", () => {
         const homeTeam: Team = "TeamA"
         const awayTeam: Team = "TeamB"
 
-        it("allows to add new game, update its score, check it on the scoreboard and eventually finish it", () => {
+        it("Allows to add new game, update its score, check it on the scoreboard and eventually finish it", () => {
             scoreBoard.addGame(homeTeam, awayTeam)
 
             const expectedScoreboard: Game[] = [
@@ -69,16 +74,23 @@ describe("Scoreboard library", () => {
             expect(() => {
                 scoreBoard.updateGame(homeTeam, awayTeam, 2, 1)
 
-            }).toThrow(new GameDoesNotExist())
+            }).toThrow(new GameDoesNotExistException())
+        })
+
+        it("Disallows to set negative value score", () => {
+            scoreBoard.addGame(homeTeam, awayTeam)
+
+            expect(() => {
+                scoreBoard.updateGame(homeTeam, awayTeam, 1, -1)
+            }).toThrow(new NegativeScoreValueException())
         })
 
         it("Disallows to set a lower score for existing game", () => {
-            scoreBoard.addGame(homeTeam, awayTeam)
             scoreBoard.updateGame(homeTeam, awayTeam, 2, 1)
 
             expect(() => {
                 scoreBoard.updateGame(homeTeam, awayTeam, 2, 0)
-            }).toThrow(new NewGameScoreIsLowerThanCurrent())
+            }).toThrow(new NewGameScoreIsLowerThanCurrentException())
         })
     })
 
