@@ -1,4 +1,4 @@
-import { GameAlreadyInScoreboardException, GameDoesNotExist } from "./exceptions"
+import { GameAlreadyInScoreboardException, GameDoesNotExist, NewGameScoreIsLowerThanCurrent } from "./exceptions"
 import { Game, ScoreBoard, Team } from "./score-board"
 
 export class ScoreBoardInMemory implements ScoreBoard {
@@ -47,6 +47,13 @@ export class ScoreBoardInMemory implements ScoreBoard {
 
         if (gameToUpdateIndex === -1) {
             throw new GameDoesNotExist()
+        }
+
+        if (
+            this.games[gameToUpdateIndex].homeTeamScore > homeTeamScore
+            || this.games[gameToUpdateIndex].awayTeamScore > awayTeamScore
+        ) {
+            throw new NewGameScoreIsLowerThanCurrent()
         }
 
         this.updateGameOnIndex(gameToUpdateIndex, {

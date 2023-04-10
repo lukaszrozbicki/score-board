@@ -7,3 +7,7 @@ export class GameAlreadyInScoreboardException extends Error {
 export class GameDoesNotExist extends Error {
     message = messages.gameDoesNotExist
 }
+
+export class NewGameScoreIsLowerThanCurrent extends Error {
+    message = messages.newGameScoreIsLowerThanCurrent
+}
