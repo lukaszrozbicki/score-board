@@ -1,0 +1,12 @@
+{
+  "name": "score-board",
+  "version": "1.0.0",
+  "description": "coding exercise",
+  "repository": "git@github.com:lukaszrozbicki/score-board.git",
+  "author": "lukasz@rozbicki.net",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "5.0.4",
+    "vitest": "0.30.0"
+  }
+}
