@@ -5,11 +5,10 @@ import { ScoreBoardInMemory } from "./score-board-in-memory"
 describe("Scoreboard library", () => {
     describe("Happy path", () => {
         const scoreBoard: ScoreBoard = new ScoreBoardInMemory()
+        const homeTeam: Team = "TeamA"
+        const awayTeam: Team = "TeamB"
 
         it("allows to add new game, update its score, check it on the scoreboard and eventually finish it", () => {
-            const homeTeam: Team = "TeamA"
-            const awayTeam: Team = "TeamB"
-
             scoreBoard.addGame(homeTeam, awayTeam)
 
             const expectedScoreboard: Game[] = [
@@ -21,7 +20,7 @@ describe("Scoreboard library", () => {
                 }
             ]
 
-            expect(scoreBoard.getGameSummary()).to.equal(expectedScoreboard)
+            expect(scoreBoard.getGameSummary()).toEqual(expectedScoreboard)
 
             scoreBoard.updateGame(homeTeam, awayTeam, 1, 0)
 
@@ -34,11 +33,11 @@ describe("Scoreboard library", () => {
                 }
             ]
 
-            expect(scoreBoard.getGameSummary()).to.equal(expectedUpdatedScoreboard)
+            expect(scoreBoard.getGameSummary()).toEqual(expectedUpdatedScoreboard)
 
             scoreBoard.finishGame(homeTeam, awayTeam)
 
-            expect(scoreBoard.getGameSummary()).to.equal([])
+            expect(scoreBoard.getGameSummary()).toEqual([])
         })
     })
 
